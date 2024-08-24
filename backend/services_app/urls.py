@@ -1,9 +1,12 @@
 from django.urls import path
 from services_app import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
 
-    path('', views.service_list, name='Services'),
-    path('<slug:category_slug>', views.service_list, name='services_by_category'),
+    path('', views.home, name="Home"),
 
 ]
+
+urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
