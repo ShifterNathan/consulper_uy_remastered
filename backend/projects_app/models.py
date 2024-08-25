@@ -1,5 +1,9 @@
 from django.db import models
+from django.core.files import File
 from services_app.models import Service
+
+from io import BytesIO
+from PIL import Image
 
 class Project(models.Model):
     service_name=models.ForeignKey(Service, null=True, on_delete=models.SET_NULL)
@@ -10,8 +14,13 @@ class Project(models.Model):
     completedAt=models.DateField(help_text="Fecha en la que se completo la obra")
 
     class Meta:
-        verbose_name = 'Servicio'
-        verbose_name_plural = 'Servicios'
+        ordering = ('title')
+        verbose_name = 'Proyecto'
+        verbose_name_plural = 'Proyectos'
     
     def __str__(self):
-        return '%s de %s' % (self.category, self.title)
+        return '%s de %s' % (self.service_name, self.title) 
+    
+    def get_absolute_url(self):
+        return f'/{self.slug}'
+
