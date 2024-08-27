@@ -1,5 +1,5 @@
 from django.db import models
-from django.urls import  reverse
+# from django.urls import  reverse
 from django.core.files import File
 from django.utils.text import slugify
 
@@ -13,7 +13,7 @@ class Service(models.Model):
     description=models.CharField(max_length=100, help_text="Texto que aparecerá en la sección inicial")
 
     class Meta:
-        ordering = ('service_name')
+        ordering = ('service_name',)
         verbose_name = 'Servicio'
         verbose_name_plural = 'Servicios'
 
@@ -44,7 +44,7 @@ class Project(models.Model):
     completedAt=models.DateField(help_text="Fecha en la que se completo la obra")
 
     class Meta:
-        ordering = ('title')
+        ordering = ('title',)
         verbose_name = 'Proyecto'
         verbose_name_plural = 'Proyectos'
     
