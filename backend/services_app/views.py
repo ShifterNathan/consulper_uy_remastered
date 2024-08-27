@@ -1,18 +1,22 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Services
-from home_app.models import Category
+from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
-'''    def services(request):
-        services = Services.objects.all()
-        categories = Category.objects.all()
-        return render(request, "services_app/services.html", {"services": services, "categories": categories})
-'''
+from .models import Service, Project
+from .serializers import ServiceSerializer, ProjectSerializer
 
-def service_list(request,category_slug=None):
-    category = None
-    categories = Category.objects.all()
-    services = Services.objects.all()
-    if category_slug:
-        category = get_object_or_404(Category,slug=category_slug)
-        services = services.filter(category=category)
-    return render(request, 'services_app/services.html', {'categories':categories, 'category':category, 'services':services,})
+class ServicesList(APIView):
+    def get(self, request, format=None):
+        services = Service.objects.all()[0:4]
+        serializer = ServiceSerializer(services, many=True)
+        return Response(serializer.data)
+
+class ProjectsList(APIView): 
+    def get(self, request, format=None):
+        projects = Project.objects.all()[0:10]
+        serializer = ProjectSerializer(projects, many=True)
+        return Response(serializer.data)
+
+# def home(request):
+#     services = Service.objects.all()
+#     return render(request, "home_app/home.html", {"services": services})

@@ -1,9 +1,12 @@
 from django.contrib import admin
-from .models import Services
+from .models import Service, Project
 
-class ServicesAdmin(admin.ModelAdmin):
-    readonly_fields=('created',)
-    search_fields=["title", "category"]
-    list_filter=["category"]
+class ServiceAdmin(admin.ModelAdmin):
+    search_fields=["service_name"]
 
-admin.site.register(Services, ServicesAdmin)
+class ProjectsAdmin(admin.ModelAdmin):
+    search_fields=["title", "service_name"]
+    list_filter=["service_name"]
+
+admin.site.register(Service, ServiceAdmin)
+admin.site.register(Project, ProjectsAdmin)
