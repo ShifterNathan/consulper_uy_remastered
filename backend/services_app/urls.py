@@ -8,6 +8,7 @@ from services_app import views
 urlpatterns = [
     path('services/', views.ServicesList.as_view()),
     path('projects/', views.ProjectsList.as_view()),
+    path('projects/<slug:service_slug>/slug:<project_slug>/', views.ProjectDetail.as_view())
 ]
 
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

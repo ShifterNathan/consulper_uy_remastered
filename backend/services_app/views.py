@@ -17,6 +17,13 @@ class ProjectsList(APIView):
         serializer = ProjectSerializer(projects, many=True)
         return Response(serializer.data)
 
+class ProjectDetail(APIView):
+    def get_object(self, service_slug, project_slug):
+        project = self.get_object(service_slug, project_slug)
+        serializer = ProjectSerializer(project)
+        return Response(serializer.data)
+
+
 # def home(request):
 #     services = Service.objects.all()
 #     return render(request, "home_app/home.html", {"services": services})
