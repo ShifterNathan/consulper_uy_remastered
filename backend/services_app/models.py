@@ -9,7 +9,7 @@ from PIL import Image
 class Service(models.Model):
     service_name=models.CharField(primary_key=True, max_length=50)
     slug=models.SlugField(unique=True, blank=True, null=True, help_text="URL que tendrá la categoría")
-    image=models.ImageField(upload_to='service_services')
+    image=models.ImageField(upload_to='uploads')
     description=models.CharField(max_length=100, help_text="Texto que aparecerá en la sección inicial")
 
     class Meta:
@@ -19,11 +19,11 @@ class Service(models.Model):
 
     def save(self, *args, **kwargs):
         if self._state.adding:
-            self.slug = slugify(self.name)
+            self.slug = slugify(self.service_name)
         super().save(*args, **kwargs)   
 
     def __str__(self):
-        return self.name
+        return self.service_name
 
     def get_absolute_url(self):
         return f'/{self.slug}'
@@ -38,10 +38,10 @@ class Project(models.Model):
     service_name=models.ForeignKey(Service, related_name='project', null=True, on_delete=models.SET_NULL)
     title=models.CharField(max_length=50, null=False)
     slug=models.SlugField(unique=True, blank=True, null=True, help_text="URL que tendrá la categoría")
-    description=models.CharField(max_length=255, null=True, blank=True, help_text="Descripción de la obra")
-    image=models.ImageField(upload_to='project_projects')
-    thumbnail=models.ImageField(upload_to='project_projects')
-    completedAt=models.DateField(help_text="Fecha en la que se completo la obra")
+    description=models.TextField(max_length=255, blank=True, null=True, help_text="Descripción de la obra")
+    image=models.ImageField(upload_to='uploads')
+    thumbnail=models.ImageField(upload_to='uploads', blank=True, null=True)
+    completedAt=models.DateField(help_text="Fecha en la que se completo la obra", blank=True, null=True,)
 
     class Meta:
         ordering = ('title',)
