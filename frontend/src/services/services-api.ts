@@ -1,25 +1,27 @@
-import { ref } from "vue";
+import { useState, useEffect } from "react";
 
 export default function useFetchServices(url: string) {
-  const data = ref();
-  const error = ref();
-  const isLoading = ref(false);
+  const [data, setData] = useState<any>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  async function fetchData() {
-    isLoading.value = true;
-    try {
-      const response = await fetch(url);
-      const services = await response.json();
-      data.value = services;
-      error.value = undefined;
-    } catch (err) {
-      console.error("Fetch error:", err);
-      data.value = undefined;
-      error.value = err;
-    }
-    isLoading.value = false;
-  }
-  fetchData();
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        setData(data);
+        setError(null);
+      } catch (error) {
+        console.error("Fetch error:", error);
+        setData(null);
+        setError(error as Error);
+      }
+      setIsLoading(false);
+    };
+    fetchData();
+  }, [url]);
 
   return { isLoading, error, data };
 }
